@@ -52,6 +52,7 @@ resource "aws_elasticsearch_domain" "this" {
   }
 
 
+/*
   cognito_options {
     enabled = var.elasticsearch_cognito_enabled
 
@@ -59,7 +60,7 @@ resource "aws_elasticsearch_domain" "this" {
     identity_pool_id = var.elasticsearch_cognito_identity_pool_id
     role_arn         = var.elasticsearch_cognito_role_arn
   }
-
+*/
 
   snapshot_options {
     automated_snapshot_start_hour = var.elasticsearch_snapshot_time
