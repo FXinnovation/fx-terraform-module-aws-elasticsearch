@@ -71,7 +71,7 @@ resource "aws_elasticsearch_domain" "this" {
   }
 
   vpc_options {
-    subnet_ids = []
+    subnet_ids = var.elasticsearch_subnet_ids
     security_group_ids = [aws_security_group.this.id]
   }
 }

@@ -14,6 +14,10 @@ variable "elasticsearch_version" {
   description = ""
 }
 
+variable "elasticsearch_subnet_ids" {
+  description = ""
+}
+
 variable "elasticsearch_data_instance_type" {
   description = ""
 }
