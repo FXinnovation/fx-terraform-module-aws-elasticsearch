@@ -1,91 +1,123 @@
-variable "environment" { 
-  description = ""
+variable "vpc_id" {
+  description = "Id of the vpc where elasticsearch cluster will be deployed."
+  type        = string
+}
+
+variable "environment" {
+  description = "Name of the environment the module belongs to."
+  type        = string
+}
+
+variable "region" {
+  description = "Region where elasticsearch cluster will be deployed."
+  type        = string
 }
 
 variable "tags" {
-  description = ""
+  description = "Map of tags to apply to all resources of the module (where applicable)."
+  default     = {}
 }
 
 variable "elasticsearch_domain_name" {
-  description = ""
+  description = "Name of the elasticsearch domain."
+  type        = string
 }
 
 variable "elasticsearch_version" {
-  description = ""
+  description = "Version of elasticsearch to use."
+  default     = "7.1"
 }
 
 variable "elasticsearch_subnet_ids" {
-  description = ""
+  description = "List of subnets where elasticsearch will be deployed."
+  type        = list(string)
 }
 
 variable "elasticsearch_data_instance_type" {
-  description = ""
+  description = "Type of instance for elasticsearch data nodes."
+  default     = "t2.small.elasticsearch"
 }
 
 variable "elasticsearch_data_instance_count" {
-  description = ""
+  description = "Number of data instances to create in elasticsearch cluster."
+  type        = string
 }
 
 variable "elasticsearch_dedicated_master" {
-  description = ""
+  description = "whether or not dedicated master nodes are enabled for the cluster."
+  default     = false
 }
 
 variable "elasticsearch_dedicated_master_type" {
-  description = ""
+  description = "Type of instance for elasticsearch master nodes."
+  default     = "t2.small.elasticsearch"
 }
 
 variable "elasticsearch_dedicated_master_count" {
-  description = ""
+  description = "Number of master instances to create in elasticsearch cluster."
+  type        = string
 }
 
 variable "elasticsearch_zone_awareness_enabled" {
-  description = ""
+  description = "Whether or not zone awareness is enabled."
+  default     = false
 }
 
 variable "elasticsearch_az_count" {
-  description = ""
+  description = "Number of Availability Zones for the domain."
+  type        = string
 }
 
 variable "elasticsearch_node2node_encryption" {
-  description = ""
+  description = "Whether to enable node-to-node encryption."
+  default     = true
 }
 
 variable "elasticsearch_encrypt_at_rest_enabled" {
-  description = ""
+  description = "Wether to enable encryption at rest."
+  default     = true
 }
 
 variable "elasticsearch_ebs_volume_enabled" {
-  description = ""
-} 
+  description = "Whether EBS volumes are attached to data nodes."
+  default     = false
+}
 
 variable "elasticsearch_ebs_volume_size" {
-  description = ""
+  description = "Size of EBS volumes attached to data nodes."
+  default     = "50"
 }
 
 variable "elasticsearch_ebs_volume_type" {
-  description = ""
+  description = "Type of EBS volumes attached to data nodes."
+  default     = "gp2"
 }
 
 variable "elasticsearch_ebs_iops" {
-  description = ""
+  description = "baseline input/output performance of EBS volumes attached to data nodes."
+  default     = "150"
 }
 
 variable "elasticsearch_cognito_enabled" {
-  description = ""
-}
-
-variable "elasticsearch_cognito_user_pool_id" {
-  description = ""
-}
-
-variable "elasticsearch_cognito_identity_pool_id" {
-  description = ""
+  description = "Wether to activate cognito configuration."
+  default     = false
 }
 
 variable "elasticsearch_cognito_role_arn" {
-  description = ""
+  description = "Arn of the cognito role."
+  default     = "arn:aws:iam::852505286086:role/service-role/CognitoAccessForAmazonES"
 }
 
 variable "elasticsearch_snapshot_time" {
-  description = ""
+  description = "Hour during which the service takes an automated daily snapshot of the indices in the domain."
+  type        = string
+}
+
+#####
+# AWS Cognito
+#####
+
+variable "stack" {
+  description = "Name of the stack for which cognito is deployed"
+  type        = string
 }
