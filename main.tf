@@ -1,4 +1,14 @@
 #####
+# Locals
+#####
+
+locals {
+  cognito_options = var.elasticsearch_cognito_enabled == false ? {} : { cognito = { enabled = true, user_pool_id = aws_cognito_user_pool.this[0].id, identity_pool_id = aws_cognito_identity_pool.this[0].id, role_arn = aws_iam_role.this.arn } }
+  ebs_options     = var.elasticsearch_ebs_volume_enabled == false ? {} : { ebs = { ebs_enabled = true, volume_size = var.elasticsearch_ebs_volume_size, volume_type = var.elasticsearch_ebs_volume_type, iops = var.elasticsearch_ebs_iops } }
+  zone_awareness_config = var.elasticsearch_zone_awareness_enabled == false ? {} : { zone = { availability_zone_count = var.elasticsearch_az_count } }
+}
+
+#####
 # AWS ElasticSearch
 #####
 
@@ -57,8 +67,11 @@ resource "aws_elasticsearch_domain" "this" {
 
     zone_awareness_enabled = var.elasticsearch_zone_awareness_enabled
 
-    zone_awareness_config {
-      availability_zone_count = var.elasticsearch_az_count
+    dynamic "zone_awareness_config" {
+      for_each = local.zone_awareness_config
+      content {
+        availability_zone_count = zone_awareness_config.value["availability_zone_count"]
+      }
     }
   }
 
@@ -276,11 +289,6 @@ resource "aws_cognito_identity_provider" "this" {
   provider_details = {
     MetadataFile = file("${path.module}/../../../saml-metadata.xml")
   }
-}
-
-locals {
-  cognito_options = var.elasticsearch_cognito_enabled == false ? {} : { cognito = { enabled = true, user_pool_id = aws_cognito_user_pool.this[0].id, identity_pool_id = aws_cognito_identity_pool.this[0].id, role_arn = aws_iam_role.this.arn } }
-  ebs_options     = var.elasticsearch_ebs_volume_enabled == false ? {} : { ebs = { ebs_enabled = true, volume_size = var.elasticsearch_ebs_volume_size, volume_type = var.elasticsearch_ebs_volume_type, iops = var.elasticsearch_ebs_iops } }
 }
 
 resource "aws_security_group" "this" {
