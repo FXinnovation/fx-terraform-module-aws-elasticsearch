@@ -103,11 +103,6 @@ variable "elasticsearch_cognito_enabled" {
   default     = false
 }
 
-variable "elasticsearch_cognito_role_arn" {
-  description = "Arn of the cognito role."
-  default     = "arn:aws:iam::852505286086:role/service-role/CognitoAccessForAmazonES"
-}
-
 variable "elasticsearch_snapshot_time" {
   description = "Hour during which the service takes an automated daily snapshot of the indices in the domain."
   type        = string

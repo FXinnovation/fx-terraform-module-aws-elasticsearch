@@ -9,12 +9,11 @@ Terraform module to deploy AWS ElasticSearch Service
 |------|-------------|:----:|:-----:|:-----:|
 | elasticsearch\_az\_count | Number of Availability Zones for the domain. | string | n/a | yes |
 | elasticsearch\_cognito\_enabled | Wether to activate cognito configuration. | string | `"false"` | no |
-| elasticsearch\_cognito\_role\_arn | Arn of the cognito role. | string | `"arn:aws:iam::852505286086:role/service-role/CognitoAccessForAmazonES"` | no |
 | elasticsearch\_data\_instance\_count | Number of data instances to create in elasticsearch cluster. | string | n/a | yes |
-| elasticsearch\_data\_instance\_type | Type of instance for elasticsearch data nodes. | string | `"t2.micro.elasticsearch"` | no |
+| elasticsearch\_data\_instance\_type | Type of instance for elasticsearch data nodes. | string | `"t2.small.elasticsearch"` | no |
 | elasticsearch\_dedicated\_master | whether or not dedicated master nodes are enabled for the cluster. | string | `"false"` | no |
 | elasticsearch\_dedicated\_master\_count | Number of master instances to create in elasticsearch cluster. | string | n/a | yes |
-| elasticsearch\_dedicated\_master\_type | Type of instance for elasticsearch master nodes. | string | `"t2.micro.elasticsearch"` | no |
+| elasticsearch\_dedicated\_master\_type | Type of instance for elasticsearch master nodes. | string | `"t2.small.elasticsearch"` | no |
 | elasticsearch\_domain\_name | Name of the elasticsearch domain. | string | n/a | yes |
 | elasticsearch\_ebs\_iops | baseline input/output performance of EBS volumes attached to data nodes. | string | `"150"` | no |
 | elasticsearch\_ebs\_volume\_enabled | Whether EBS volumes are attached to data nodes. | string | `"false"` | no |
@@ -27,7 +26,9 @@ Terraform module to deploy AWS ElasticSearch Service
 | elasticsearch\_version | Version of elasticsearch to use. | string | `"7.1"` | no |
 | elasticsearch\_zone\_awareness\_enabled | Whether or not zone awareness is enabled. | string | `"false"` | no |
 | environment | Name of the environment the module belongs to. | string | n/a | yes |
+| region | Region where elasticsearch cluster will be deployed. | string | n/a | yes |
 | stack | Name of the stack for which cognito is deployed | string | n/a | yes |
-| tags | Map of tags to apply to all resources of the module (where applicable). | map | `{}` | no |
+| tags | Map of tags to apply to all resources of the module \(where applicable\). | map | `{}` | no |
+| vpc\_id | Id of the vpc where elasticsearch cluster will be deployed. | string | n/a | yes |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

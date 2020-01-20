@@ -72,13 +72,15 @@ resource "aws_elasticsearch_domain" "this" {
     kms_key_id = aws_kms_key.this.arn
   }
 
-  ebs_options {
-    ebs_enabled = var.elasticsearch_ebs_volume_enabled
-
-    volume_size = var.elasticsearch_ebs_volume_size
-    volume_type = var.elasticsearch_ebs_volume_type
+  dynamic "ebs_options" {
+    for_each = local.ebs_options
+    content {
+      ebs_enabled = ebs_options.value["ebs_enabled"]
+      volume_size = ebs_options.value["volume_size"]
+      volume_type = ebs_options.value["volume_type"]
+      iops        = ebs_options.value["iops"]
+    }
   }
-
 
   dynamic "cognito_options" {
     for_each = local.cognito_options
@@ -278,8 +280,9 @@ resource "aws_cognito_identity_provider" "this" {
 
 locals {
   cognito_options = var.elasticsearch_cognito_enabled == false ? {} : { cognito = { enabled = true, user_pool_id = aws_cognito_user_pool.this[0].id, identity_pool_id = aws_cognito_identity_pool.this[0].id, role_arn = aws_iam_role.this.arn } }
+  ebs_options     = var.elasticsearch_ebs_volume_enabled == false ? {} : { ebs = { ebs_enabled = true, volume_size = var.elasticsearch_ebs_volume_size, volume_type = var.elasticsearch_ebs_volume_type, iops = var.elasticsearch_ebs_iops } }
 }
 
 resource "aws_security_group" "this" {
-  vpc_id      = var.vpc_id
+  vpc_id = var.vpc_id
 }
