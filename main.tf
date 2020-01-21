@@ -6,6 +6,7 @@ locals {
   cognito_options = var.elasticsearch_cognito_enabled == false ? {} : { cognito = { enabled = true, user_pool_id = aws_cognito_user_pool.this[0].id, identity_pool_id = aws_cognito_identity_pool.this[0].id, role_arn = aws_iam_role.this.arn } }
   ebs_options     = var.elasticsearch_ebs_volume_enabled == false ? {} : { ebs = { ebs_enabled = true, volume_size = var.elasticsearch_ebs_volume_size, volume_type = var.elasticsearch_ebs_volume_type, iops = var.elasticsearch_ebs_iops } }
   zone_awareness_config = var.elasticsearch_zone_awareness_enabled == false ? {} : { zone = { availability_zone_count = var.elasticsearch_az_count } }
+  encrypt_at_rest = var.elasticsearch_encrypt_at_rest_enabled == false ? {} : { encrypt = { enabled = true, kms_key_id = aws_kms_key.this.arn } }
 }
 
 #####
@@ -79,10 +80,12 @@ resource "aws_elasticsearch_domain" "this" {
     enabled = var.elasticsearch_node2node_encryption
   }
 
-  encrypt_at_rest {
-    enabled = var.elasticsearch_encrypt_at_rest_enabled
-
-    kms_key_id = aws_kms_key.this.arn
+  dynamic "encrypt_at_rest" {
+    for_each = local.encrypt_at_rest
+    content {
+      enabled = encrypt_at_rest.value["enabled"]
+      kms_key_id = encrypt_at_rest.value["kms_key_id"]
+    }
   }
 
   dynamic "ebs_options" {
