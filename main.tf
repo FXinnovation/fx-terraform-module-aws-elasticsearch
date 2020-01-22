@@ -139,7 +139,7 @@ resource "aws_elasticsearch_domain_policy" "this" {
         {
             "Action": "es:ESHttp*",
             "Principal": {
-              "AWS": "${aws_iam_role.authenticated.arn}"
+              "AWS": "${aws_iam_role.authenticated[count.index].arn}"
             },
             "Effect": "Allow",
             "Resource": "${aws_elasticsearch_domain.this.arn}/*"
@@ -293,7 +293,14 @@ resource "aws_cognito_user_pool" "this" {
   count = var.elasticsearch_cognito_enabled ? 1 : 0
 
   name = format("%s-%s-user-pool", var.stack, var.environment)
-  required = "email"
+
+  schema {
+    attribute_data_type      = "String"
+    developer_only_attribute = false
+    mutable                  = false
+    name                     = "email"
+    required                 = true
+  }
 }
 
 resource "aws_cognito_user_pool_domain" "this" {
