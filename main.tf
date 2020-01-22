@@ -127,6 +127,28 @@ resource "aws_elasticsearch_domain" "this" {
   ]
 }
 
+resource "aws_elasticsearch_domain_policy" "this" {
+  count = var.elasticsearch_cognito_enabled ? 1 : 0
+
+  domain_name = aws_elasticsearch_domain.this.domain_name
+
+  access_policies = <<POLICIES
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": "es:ESHttp*",
+            "Principal": {
+              "AWS": "${aws_iam_role.authenticated.arn}"
+            },
+            "Effect": "Allow",
+            "Resource": "${aws_elasticsearch_domain.this.arn}/*"
+        }
+    ]
+}
+POLICIES
+}
+
 #####
 # AWS Cognito
 #####
@@ -271,6 +293,7 @@ resource "aws_cognito_user_pool" "this" {
   count = var.elasticsearch_cognito_enabled ? 1 : 0
 
   name = format("%s-%s-user-pool", var.stack, var.environment)
+  required = "email"
 }
 
 resource "aws_cognito_user_pool_domain" "this" {
