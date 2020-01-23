@@ -294,13 +294,6 @@ resource "aws_cognito_user_pool" "this" {
 
   name = format("%s-%s-user-pool", var.stack, var.environment)
 
-  schema {
-    attribute_data_type      = "String"
-    developer_only_attribute = false
-    mutable                  = false
-    name                     = "email"
-    required                 = true
-  }
 }
 
 resource "aws_cognito_user_pool_domain" "this" {
