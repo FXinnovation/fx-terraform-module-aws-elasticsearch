@@ -8,6 +8,10 @@ Terraform module to deploy AWS ElasticSearch Service
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
 | administrator\_access\_cidrs | List of CIDR's fron which users will have access to the application. | list | `[ "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16" ]` | no |
+| cognito\_idp\_client\_id | Id of the client app in cognito | string | n/a | yes |
+| cognito\_idp\_sso\_redirect | URL of the identity provider | string | n/a | yes |
+| cognito\_provider\_name | Name of the identity provider | string | n/a | yes |
+| cognito\_server\_side\_token\_check | Whether or not token should be check on server side | string | `"true"` | no |
 | elasticsearch\_az\_count | Number of Availability Zones for the domain. | string | n/a | yes |
 | elasticsearch\_cognito\_enabled | Wether to activate cognito configuration. | string | `"false"` | no |
 | elasticsearch\_data\_instance\_count | Number of data instances to create in elasticsearch cluster. | string | n/a | yes |

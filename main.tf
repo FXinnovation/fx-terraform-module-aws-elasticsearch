@@ -287,6 +287,13 @@ resource "aws_cognito_identity_pool" "this" {
   allow_unauthenticated_identities = false
 
   saml_provider_arns = [aws_iam_saml_provider.this.0.arn]
+
+  cognito_identity_providers {
+    client_id               = var.cognito_idp_client_id
+    provider_name           = var.cognito_provider_name
+    server_side_token_check = var.cognito_server_side_token_check
+  }
+
 }
 
 resource "aws_cognito_user_pool" "this" {
@@ -313,7 +320,8 @@ resource "aws_cognito_identity_provider" "this" {
     email = "email"
   }
   provider_details = {
-    MetadataFile = file("${path.module}/../../../saml-metadata.xml")
+    MetadataFile          = file("${path.module}/../../../saml-metadata.xml")
+    SSORedirectBindingURI = var.cognito_idp_sso_redirect
   }
 }
 

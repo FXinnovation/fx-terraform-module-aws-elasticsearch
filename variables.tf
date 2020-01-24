@@ -126,3 +126,23 @@ variable "stack" {
   description = "Name of the stack for which cognito is deployed"
   type        = string
 }
+
+variable "cognito_idp_client_id" {
+  description = "Id of the client app in cognito"
+  type        = string
+}
+
+variable "cognito_provider_name" {
+  description = "Name of the identity provider"
+  type        = string
+}
+
+variable "cognito_server_side_token_check" {
+  description = "Whether or not token should be check on server side"
+  default     = true
+}
+
+variable "cognito_idp_sso_redirect" {
+  description = "URL of the identity provider"
+  type        = string
+}
