@@ -7,6 +7,7 @@ Terraform module to deploy AWS ElasticSearch Service
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
+| administrator\_access\_cidrs | List of CIDR's fron which users will have access to the application. | list | `[ "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16" ]` | no |
 | elasticsearch\_az\_count | Number of Availability Zones for the domain. | string | n/a | yes |
 | elasticsearch\_cognito\_enabled | Wether to activate cognito configuration. | string | `"false"` | no |
 | elasticsearch\_data\_instance\_count | Number of data instances to create in elasticsearch cluster. | string | n/a | yes |
@@ -27,6 +28,7 @@ Terraform module to deploy AWS ElasticSearch Service
 | elasticsearch\_zone\_awareness\_enabled | Whether or not zone awareness is enabled. | string | `"false"` | no |
 | environment | Name of the environment the module belongs to. | string | n/a | yes |
 | region | Region where elasticsearch cluster will be deployed. | string | n/a | yes |
+| sg\_tags | Tags to applt on the security groups of the module. | map | `{}` | no |
 | stack | Name of the stack for which cognito is deployed | string | n/a | yes |
 | tags | Map of tags to apply to all resources of the module \(where applicable\). | map | `{}` | no |
 | vpc\_id | Id of the vpc where elasticsearch cluster will be deployed. | string | n/a | yes |

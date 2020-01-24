@@ -108,6 +108,16 @@ variable "elasticsearch_snapshot_time" {
   type        = string
 }
 
+variable "administrator_access_cidrs" {
+  description = "List of CIDR's fron which users will have access to the application."
+  default     = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+}
+
+variable "sg_tags" {
+  description = "Tags to applt on the security groups of the module."
+  default     = {}
+}
+
 #####
 # AWS Cognito
 #####
