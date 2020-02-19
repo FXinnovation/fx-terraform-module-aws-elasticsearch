@@ -143,6 +143,14 @@ resource "aws_elasticsearch_domain_policy" "this" {
             },
             "Effect": "Allow",
             "Resource": "${aws_elasticsearch_domain.this.arn}/*"
+        },
+        {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "ec2.amazonaws.com"
+            },
+            "Action": "es:ESHttp*",
+            "Resource": "${aws_elasticsearch_domain.this.arn}/*"
         }
     ]
 }
