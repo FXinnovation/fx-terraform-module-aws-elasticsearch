@@ -8,11 +8,6 @@ variable "environment" {
   type        = string
 }
 
-variable "region" {
-  description = "Region where elasticsearch cluster will be deployed."
-  type        = string
-}
-
 variable "tags" {
   description = "Map of tags to apply to all resources of the module (where applicable)."
   default     = {}

@@ -22,7 +22,6 @@ module "elasticsearch" {
 
   vpc_id                               = data.aws_vpc.this.id
   environment                          = local.environment
-  region                               = "ca-central-1"
   elasticsearch_domain_name            = format("es-%s", local.environment)
   elasticsearch_subnet_ids             = data.aws_subnet_ids.this.ids
   elasticsearch_data_instance_count    = "2"
