@@ -127,11 +127,6 @@ variable "cognito_idp_client_id" {
   type        = string
 }
 
-variable "cognito_provider_name" {
-  description = "Name of the identity provider"
-  type        = string
-}
-
 variable "cognito_server_side_token_check" {
   description = "Whether or not token should be check on server side"
   default     = true

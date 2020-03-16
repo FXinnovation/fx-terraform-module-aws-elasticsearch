@@ -3,11 +3,13 @@
 #####
 
 locals {
-  cognito_options       = var.elasticsearch_cognito_enabled == false ? {} : { cognito = { enabled = true, user_pool_id = aws_cognito_user_pool.this[0].id, identity_pool_id = aws_cognito_identity_pool.this[0].id, role_arn = aws_iam_role.this.arn } }
+  cognito_options       = var.elasticsearch_cognito_enabled == false ? {} : { cognito = { enabled = true, user_pool_id = aws_cognito_user_pool.this[0].id, identity_pool_id = var.elasticsearch_cognito_enabled == true ? aws_cognito_identity_pool.this[0].id : "", role_arn = aws_iam_role.this.arn } }
   ebs_options           = var.elasticsearch_ebs_volume_enabled == false ? {} : { ebs = { ebs_enabled = true, volume_size = var.elasticsearch_ebs_volume_size, volume_type = var.elasticsearch_ebs_volume_type, iops = var.elasticsearch_ebs_iops } }
   zone_awareness_config = var.elasticsearch_zone_awareness_enabled == false ? {} : { zone = { availability_zone_count = var.elasticsearch_az_count } }
   encrypt_at_rest       = var.elasticsearch_encrypt_at_rest_enabled == false ? {} : { encrypt = { enabled = true, kms_key_id = aws_kms_key.this.arn } }
 }
+
+data "aws_region" "this" {}
 
 #####
 # AWS ElasticSearch
@@ -178,7 +180,7 @@ resource "aws_iam_role" "authenticated" {
       "Action": "sts:AssumeRoleWithWebIdentity",
       "Condition": {
         "StringEquals": {
-          "cognito-identity.amazonaws.com:aud": "${aws_cognito_identity_pool.this[0].id}"
+          "cognito-identity.amazonaws.com:aud": "${var.elasticsearch_cognito_enabled == true ? aws_cognito_identity_pool.this[0].id : ""}"
         },
         "ForAnyValue:StringLike": {
           "cognito-identity.amazonaws.com:amr": "authenticated"
@@ -233,7 +235,7 @@ resource "aws_iam_role" "unauthenticated" {
       "Action": "sts:AssumeRoleWithWebIdentity",
       "Condition": {
         "StringEquals": {
-          "cognito-identity.amazonaws.com:aud": "${aws_cognito_identity_pool.this[0].id}"
+          "cognito-identity.amazonaws.com:aud": "${var.elasticsearch_cognito_enabled == true ? aws_cognito_identity_pool.this[0].id : ""}"
         },
         "ForAnyValue:StringLike": {
           "cognito-identity.amazonaws.com:amr": "unauthenticated"
@@ -298,7 +300,7 @@ resource "aws_cognito_identity_pool" "this" {
 
   cognito_identity_providers {
     client_id               = var.cognito_idp_client_id
-    provider_name           = var.cognito_provider_name
+    provider_name           = "cognito-idp.${data.aws_region.this.name}.amazonaws.com/${aws_cognito_user_pool.this[count.index].id}"
     server_side_token_check = var.cognito_server_side_token_check
   }
 
