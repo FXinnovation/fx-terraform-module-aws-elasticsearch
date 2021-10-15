@@ -85,7 +85,7 @@ variable "elasticsearch_ebs_volume_size" {
 
 variable "elasticsearch_ebs_volume_type" {
   description = "Type of EBS volumes attached to data nodes."
-  default     = "gp2"
+  default     = "gp3"
 }
 
 variable "elasticsearch_ebs_iops" {
